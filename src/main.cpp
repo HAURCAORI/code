@@ -10,7 +10,7 @@ int main() {
     int ret = -1;
     int count = 0;
     std::cin >> n;
-    
+     
     for(long i = 1; i <= 9876543210; i++) {
         if(count >= n) { ret = i-1; break; }
         bool result = true;
