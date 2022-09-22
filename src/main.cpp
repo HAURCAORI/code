@@ -1,30 +1,43 @@
 #include <iostream>
-/*
-#include <chrono>
-#define BEGIN_CHRONO std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-#define END_CHRONO std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - begin).count() << "[ms]" << std::endl;
-*/
-int main() {
-    
-    int n;
-    int ret = -1;
-    int count = 0;
-    std::cin >> n;
-     
-    for(long i = 1; i <= 9876543210; i++) {
-        if(count >= n) { ret = i-1; break; }
-        bool result = true;
-        long x = i;
-        
-        while( x >= 10) {
-            if( (x % 10) >= ((x / 10) % 10) ) {
-                result = false;
-                break;
-            }
-            x /= 10;
-        }
-        if(result) { ++count; }
+#include <math.h>
+#include <vector>
+
+std::vector<long> get(int first, int size) {
+    if(size == 0) {
+        return std::vector<long>{0};
     }
-    std::cout << ret << std::endl;
-    return 0;
+    if(size == 1) {
+        return std::vector<long>{first};
+    }
+    std::vector<long> ret;
+    for(int j = 0; j < first; j++) {
+        std::vector<long> vec = get(j,size-1);
+        for(auto it = vec.begin(); it != vec.end(); ++it) {
+            ret.push_back(first * std::pow(10,size-1) + *it);
+        }
+    }
+    return ret;
 }
+
+long getValue(int n) {
+    int count = 0;
+    for(int i = 1; i < 11; ++i) {
+        for(int j = 0; j < 10; ++j) {
+            std::vector<long> vec = get(j,i);
+            count += vec.size();
+            if(count > n) {
+                return vec[vec.size() - count + n];
+            }
+        }
+    }
+    return -1;
+}
+
+int main()
+{
+    int n;
+    std::cin >> n;
+    std::cout << getValue(n) << std::endl;
+
+        return 0;
+    }
